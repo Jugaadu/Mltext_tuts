@@ -18,34 +18,71 @@
 # ## Task 1
 # 
 # Read **`yelp.csv`** into a Pandas DataFrame and examine it.
+
+from __future__ import print_function
 import pandas as pd
 import numpy as np
 
 yelp = pd.read_csv('yelp.csv')
-print yelp.shape
-print yelp.columns
-print yelp.head()
+print("Shape of Yelp dataset = ", yelp.shape)
+print ("Column Names of Yelp dataset: \n",yelp.columns)
+#print yelp.head()
 # ## Task 2
 # 
 # Create a new DataFrame that only contains the **5-star** and **1-star** reviews.
 yelp_5 = yelp[(yelp['stars'] == 5) | (yelp['stars'] == 1)]
-print yelp_5.shape
+print("Shape of New data containing 1 star and 5 star is", yelp_5.shape)
 # 
 # - **Hint:** [How do I apply multiple filter criteria to a pandas DataFrame?](https://www.youtube.com/watch?v=YPItfQ87qjM&list=PL5-da3qGB5ICCsgW1MxlZ0Hq8LL5U3u9y&index=9) explains how to do this.
 
 # ## Task 3
 # 
 # Define X and y from the new DataFrame, and then split X and y into training and testing sets, using the **review text** as the only feature and the **star rating** as the response.
-# 
+#
+
+y = yelp_5.stars
+
+X = yelp_5.drop("stars", axis =1)
+
+
+print("Shape of X: ", X.shape)
+print("Shape of Y: ", y.shape) 
 # - **Hint:** Keep in mind that X should be a Pandas Series (not a DataFrame), since we will pass it to CountVectorizer in the task that follows.
 
 # ## Task 4
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.model_selection import train_test_split
+
+vect = CountVectorizer()
+
+X_train, X_test, y_train, y_test = train_test_split(X,y, random_state = 12)
+print("Shape of training sample X:", X_train.shape)
+print("Shape of test sample X:", X_test.shape)
+
 # 
 # Use CountVectorizer to create **document-term matrices** from X_train and X_test.
+#vect.fit(X_train)
+X_train_dtm = vect.fit_transform(X_train)
+print("Shape of X_train_dtm:", X_train_dtm.shape)
+X_test_dtm = vect.transform(X_test)
+print("Shape of X_test_dtm:", X_test_dtm.shape)
+
+
+print(X_train_dtm)
 
 # ## Task 5
 # 
 # Use Multinomial Naive Bayes to **predict the star rating** for the reviews in the testing set, and then **calculate the accuracy** and **print the confusion matrix**.
+from sklearn.naive_bayes import MultinomialNB
+nb = MultinomialNB()
+
+nb.fit(X_train_dtm, y_train)
+
+y_pred_class = nb.predict(X_test_dtm)
+
+from sklearn import metrics
+print("Accuracy score :", metrics.accuracy_score(y_test,y_pred_class))
+print("Confusion Matrix:\n",metrics.confusion_matrix(y_test, y_pred_class))
 # 
 # - **Hint:** [Evaluating a classification model](https://github.com/justmarkham/scikit-learn-videos/blob/master/09_classification_metrics.ipynb) explains how to interpret both classification accuracy and the confusion matrix.
 
