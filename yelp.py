@@ -42,7 +42,7 @@ print("Shape of New data containing 1 star and 5 star is", yelp_5.shape)
 
 y = yelp_5.stars
 
-X = yelp_5.drop("stars", axis =1)
+X = yelp_5.text
 
 
 print("Shape of X: ", X.shape)
@@ -68,7 +68,7 @@ X_test_dtm = vect.transform(X_test)
 print("Shape of X_test_dtm:", X_test_dtm.shape)
 
 
-print(X_train_dtm)
+#print(X_train_dtm)
 
 # ## Task 5
 # 
