@@ -102,6 +102,13 @@ print("Null Accuracy other method :",yelp_5.stars.value_counts().head(1) / len(y
 # ## Task 7 (Challenge)
 # 
 # Browse through the review text of some of the **false positives** and **false negatives**. Based on your knowledge of how Naive Bayes works, do you have any ideas about why the model is incorrectly classifying these reviews?
+
+print("False Positive Examples\n")
+
+print(X_test[y_test < y_pred_class][:20],"\n")
+print ("False Negative Examples ")
+print(X_test[y_test> y_pred_class][:20])
+
 # 
 # - **Hint:** [Evaluating a classification model](https://github.com/justmarkham/scikit-learn-videos/blob/master/09_classification_metrics.ipynb) explains the definitions of "false positives" and "false negatives".
 # - **Hint:** Think about what a false positive means in this context, and what a false negative means in this context. What has scikit-learn defined as the "positive class"?
