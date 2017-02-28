@@ -95,7 +95,7 @@ null_accuracy = len(yelp_5[yelp_5["stars"] == 5])/ len(yelp_5)
 
 print("Null Accuracy is :", null_accuracy)
 
-print("Null Accuracy other method :",y_test.value_counts().head(1) / len(y_test))
+print("Null Accuracy other method :",yelp_5.stars.value_counts().head(1) / len(yelp_5))
 # 
 # - **Hint:** [Evaluating a classification model](https://github.com/justmarkham/scikit-learn-videos/blob/master/09_classification_metrics.ipynb) explains null accuracy and demonstrates two ways to calculate it, though only one of those ways will work in this case. Alternatively, you can come up with your own method to calculate null accuracy!
 
