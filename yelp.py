@@ -110,6 +110,9 @@ print ("False Negative Examples ")
 print(X_test[y_test> y_pred_class][:20])
 
 # 
+confusion = metrics.confusion_matrix(y_test,y_pred_class)
+
+print("Confusion matrix :\n",confusion)
 # - **Hint:** [Evaluating a classification model](https://github.com/justmarkham/scikit-learn-videos/blob/master/09_classification_metrics.ipynb) explains the definitions of "false positives" and "false negatives".
 # - **Hint:** Think about what a false positive means in this context, and what a false negative means in this context. What has scikit-learn defined as the "positive class"?
 
