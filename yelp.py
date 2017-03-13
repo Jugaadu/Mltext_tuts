@@ -162,7 +162,27 @@ print(tokens.head())
 #
 # Calculate which 10 tokens are the most predictive of **5-star reviews**,
 # and which 10 tokens are the most predictive of **1-star reviews**.
+
+
+tokens['star_1'] = tokens.star_1 + 1
+tokens['star_5'] = tokens.star_5 + 1
+
+
+print('tokens sample:', tokens.sample(5,random_state = 6))
+
+print('Class count :',nb.class_count_)
+
+tokens['star_1'] = tokens.star_1/nb.class_count_[0]
+tokens['star_5'] = tokens.star_5/nb.class_count_[1]
 #
+print('tokens sample:', tokens.sample(5,random_state = 6))
+
+tokens['star_ratio'] = tokens.star_5/tokens.star_1
+tokens = tokens.sort_values('star_ratio',ascending = False)
+
+print(tokens)
+
+#####
 # - **Hint:** Naive Bayes automatically counts the number of times each token
 # appears in each class, as well as the number of observations in each class.
 # You can access these counts via the `feature_count_` and `class_count_`
@@ -177,15 +197,38 @@ print(tokens.head())
 #
 # Here are the steps:
 #
+
 # - Define X and y using the original DataFrame. (y should contain 5 different classes.)
+y = yelp.stars
+
+X = yelp.text
+
+
 # - Split X and y into training and testing sets.
+X_train, X_test, y_train, y_test = train_test_split(X,y, random_state = 12)
+
 # - Create document-term matrices using CountVectorizer.
+X_train_dtm = vect.fit_transform(X_train)
+X_test_dtm = vect.transform(X_test)
 # - Calculate the testing accuracy of a Multinomial Naive Bayes model.
+nb.fit(X_train_dtm, y_train)
+
+y_pred_class = nb.predict(X_test_dtm)
+
+print("Accuracy score :", metrics.accuracy_score(y_test,y_pred_class))
+print("Confusion Matrix:\n",metrics.confusion_matrix(y_test, y_pred_class))
+
+
 # - Compare the testing accuracy with the null accuracy, and comment on the results.
+
 # - Print the confusion matrix, and comment on the results.
+
 # (This [Stack Overflow answer](http://stackoverflow.com/a/30748053/1636598)
+
 # explains how to read a multi-class confusion matrix.)
+
 # - Print the [classification report](http://scikit-learn.org/stable/modules/model_evaluation.html
+
 #classification-report), and comment on the results. If you are unfamiliar
 # with the terminology it uses, research the terms, and then try to figure out
 # how to calculate these metrics manually from the confusion matrix!
